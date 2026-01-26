@@ -1,65 +1,155 @@
-import Image from "next/image";
+import AnimatedCard from "../components/AnimatedCard";
+import AnimatedImage from "../components/AnimatedImage";
+import WhyChooseUs from "../components/WhyChooseUs";
+import RecentWork from "../components/RecentWork";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div style={{ paddingTop: "20px" }}>
+      {/* ===== HERO SECTION ===== */}
+      <section
+        style={{
+          border: "1px solid #e6edf2",
+          borderRadius: "16px",
+          padding: "20px",
+          background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+          color: "#fff",
+        }}
+      >
+        <h1 style={{ fontSize: "40px", margin: "0 0 10px 0" }}>
+          Air Conditioning Services Across London
+        </h1>
+
+        <p style={{ margin: 0, color: "#d9f2f6", fontSize: "16px" }}>
+          installation, service, repair and maintenance — residential and
+          commercial. Open 24/7 for emergency call-outs.
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            flexWrap: "wrap",
+            marginTop: "14px",
+          }}
+        >
+          <a href="tel:+447526556945">
+            <button
+              style={{
+                padding: "10px 14px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                border: "1px solid rgba(255,255,255,0.35)",
+                background: "rgba(255,255,255,0.12)",
+                color: "#fff",
+                fontWeight: 700,
+              }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Call Now
+            </button>
+          </a>
+
+          <a
+            href="https://wa.me/447526556945"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <button
+              style={{
+                padding: "10px 14px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                border: "1px solid #0fb2c6",
+                background: "#1ecbe1",
+                fontWeight: 800,
+              }}
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+              WhatsApp
+            </button>
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+
+          <a href="/quote">
+            <button
+              style={{
+                padding: "10px 14px",
+                cursor: "pointer",
+                borderRadius: "10px",
+                border: "1px solid rgba(255,255,255,0.35)",
+                background: "rgba(255,255,255,0.12)",
+                color: "#fff",
+                fontWeight: 700,
+              }}
+            >
+              Get Quote
+            </button>
           </a>
         </div>
-      </main>
+      </section>
+
+      {/* ===== WHAT WE DO ===== */}
+      <section style={{ marginTop: "28px" }}>
+        <h2>What we do</h2>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "16px",
+          }}
+        >
+          {[
+            "Installation",
+            "Servicing",
+            "Repair",
+            "Maintenance",
+            "Emergency 24/7",
+            "Commercial HVAC",
+            "Residential AC",
+            "Fault Diagnosis",
+          ].map((item) => (
+            <AnimatedCard key={item}>
+              <strong style={{ fontSize: "16px" }}>{item}</strong>
+              <div
+                style={{
+                  marginTop: "6px",
+                  color: "#b9c6cf",
+                  fontSize: "13px",
+                }}
+              >
+                London-wide support — call or WhatsApp anytime.
+              </div>
+            </AnimatedCard>
+          ))}
+        </div>
+      </section>
+
+      {/* ===== WHY CHOOSE US ===== */}
+      <WhyChooseUs />
+<RecentWork />
+
+      {/* ===== RECENT WORK ===== */}
+      <section style={{ marginTop: "28px" }}>
+        <h2>Recent work</h2>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "16px",
+          }}
+        >
+          {[
+            "/work/1.jpg",
+            "/work/2.jpg",
+            "/work/3.jpg",
+            "/work/4.jpg",
+            "/work/5.jpg",
+            "/work/6.jpg",
+          ].map((src) => (
+            <AnimatedImage key={src} src={src} />
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

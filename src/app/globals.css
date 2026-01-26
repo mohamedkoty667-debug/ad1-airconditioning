@@ -24,3 +24,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+@media (max-width: 900px) {
+  nav[aria-label="Primary"] {
+    display: none !important;
+  }
+  header button[aria-label="Open menu"] {
+    display: flex !important;
+  }
+}
