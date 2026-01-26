@@ -26,54 +26,47 @@ export default function Header() {
   );
 
   const waMsg =
-    "Hello Ad1 Airconditioning Ltd,%0A" +
-    "I would like to get in touch.%0A%0A" +
-    "Service needed:%0A" +
-    "Postcode:%0A" +
-    "Residential/Commercial:%0A" +
-    "Details:%0A";
+    "Hello Ad1 Airconditioning Ltd,\n" +
+    "I would like to get in touch.\n\n" +
+    "Service needed:\n" +
+    "Postcode:\n" +
+    "Residential/Commercial:\n" +
+    "Details:\n";
 
   return (
-    <header style={styles.wrap}>
-      {/* Top bar */}
-      <div style={styles.topBar}>
-        <div style={styles.containerTop}>
-          <div style={styles.topLeft}>
-            <span style={styles.pulseDot} />
-            <span style={styles.sep}>•</span>
-            <span style={styles.topText}>London-wide coverage</span>
+    <header style={s.wrap}>
+      {/* Top strip */}
+      <div style={s.topStrip}>
+        <div style={s.containerTop}>
+          <div style={s.topLeft}>
+            <span style={s.dot} />
+            <span style={s.topStrong}></span>
+            <span style={s.sep}>•</span>
+            <span style={s.topText}>London-wide coverage</span>
           </div>
 
-          <div style={styles.topRight}>
-            <span style={styles.topText}>Company No. 16462923</span>
-            <span style={styles.sep}>•</span>
-            <span style={styles.topText}>SE13 6DR</span>
+          <div style={s.topRight}>
+            <span style={s.topText}>Company No. 16462923</span>
           </div>
         </div>
       </div>
 
       {/* Main bar */}
-      <div style={styles.mainBar}>
-        <div style={styles.container}>
+      <div style={s.mainBar}>
+        <div style={s.container}>
           {/* Brand */}
-          <div style={styles.brand}>
-            <Link href="/" style={styles.logoLink} onClick={() => setOpen(false)}>
-              <img
-                src="/logo.jpg"
-                alt="Ad1 Airconditioning Ltd"
-                style={styles.logoImg}
-              />
-              <div style={styles.brandText}>
-                <div style={styles.brandName}>Ad1 Airconditioning Ltd</div>
-                <div style={styles.brandTagline}>
-                  installation, service, repair and maintenance
-                </div>
+          <Link href="/" style={s.brand} onClick={() => setOpen(false)}>
+            <img src="/logo.jpg" alt="Ad1 Airconditioning Ltd" style={s.logo} />
+            <div style={s.brandText}>
+              <div style={s.name}>Ad1 Airconditioning Ltd</div>
+              <div style={s.tagline}>
+                installation, service, repair and maintenance
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
 
           {/* Desktop nav */}
-          <nav style={styles.navDesktop} aria-label="Primary">
+          <nav style={s.navDesktop} aria-label="Primary">
             {nav.map((item) => {
               const active =
                 item.href === "/"
@@ -84,10 +77,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  style={{
-                    ...styles.navLink,
-                    ...(active ? styles.navLinkActive : {}),
-                  }}
+                  style={{ ...s.navLink, ...(active ? s.navActive : {}) }}
                 >
                   {item.label}
                 </Link>
@@ -95,37 +85,32 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Actions */}
-          <div style={styles.actions}>
-            <a
-              href={waLink(waMsg)}
-              target="_blank"
-              rel="noreferrer"
-              style={styles.waBtn}
-            >
-              WhatsApp
-            </a>
+          {/* Desktop WhatsApp */}
+          <a
+            href={waLink(waMsg)}
+            target="_blank"
+            rel="noreferrer"
+            style={s.waDesktop}
+          >
+            WhatsApp
+          </a>
 
-            {/* Mobile menu button */}
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              style={styles.burger}
-              aria-label="Open menu"
-              aria-expanded={open}
-            >
-              <span style={{ ...styles.burgerLine, ...(open ? styles.bLine1 : {}) }} />
-              <span style={{ ...styles.burgerLine, ...(open ? styles.bLine2 : {}) }} />
-              <span style={{ ...styles.burgerLine, ...(open ? styles.bLine3 : {}) }} />
-            </button>
-          </div>
+          {/* Mobile Menu button */}
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            style={s.menuBtn}
+            aria-label="Toggle menu"
+          >
+            Menu
+          </button>
         </div>
 
-        {/* Mobile panel */}
+        {/* Mobile dropdown */}
         {open && (
-          <div style={styles.mobilePanel}>
-            <div style={styles.container}>
-              <div style={styles.mobileNav}>
+          <div style={s.mobilePanel}>
+            <div style={s.container}>
+              <div style={s.mobileNav}>
                 {nav.map((item) => {
                   const active =
                     item.href === "/"
@@ -138,8 +123,8 @@ export default function Header() {
                       href={item.href}
                       onClick={() => setOpen(false)}
                       style={{
-                        ...styles.mobileLink,
-                        ...(active ? styles.mobileLinkActive : {}),
+                        ...s.mobileLink,
+                        ...(active ? s.mobileActive : {}),
                       }}
                     >
                       {item.label}
@@ -148,20 +133,15 @@ export default function Header() {
                 })}
               </div>
 
-              <div style={styles.mobileCTA}>
-                <a
-                  href={waLink(waMsg)}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={styles.waBtnWide}
-                  onClick={() => setOpen(false)}
-                >
-                  Message us on WhatsApp
-                </a>
-                <div style={styles.mobileNote}>
-                  Reply fast • Please include your postcode
-                </div>
-              </div>
+              <a
+                href={waLink(waMsg)}
+                target="_blank"
+                rel="noreferrer"
+                style={s.waMobile}
+                onClick={() => setOpen(false)}
+              >
+                WhatsApp
+              </a>
             </div>
           </div>
         )}
@@ -170,200 +150,151 @@ export default function Header() {
   );
 }
 
-/* ===== styles ===== */
-const styles: Record<string, React.CSSProperties> = {
+/* ===== Styles ===== */
+const s: Record<string, React.CSSProperties> = {
   wrap: {
-    position: "sticky",
-    top: 0,
-    zIndex: 50,
-    backdropFilter: "blur(10px)",
+    background: "#0b1220",
+    borderBottom: "1px solid rgba(255,255,255,0.10)",
   },
 
-  topBar: {
+  topStrip: {
     background: "linear-gradient(90deg, rgba(34,197,94,0.18), rgba(59,130,246,0.14))",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
   },
   containerTop: {
-    maxWidth: "1100px",
+    maxWidth: 1100,
     margin: "0 auto",
     padding: "8px 14px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: "12px",
-    flexWrap: "wrap",
+    gap: 12,
   },
-  topLeft: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    color: "#e5e7eb",
-    fontSize: "13px",
-    fontWeight: 700,
-  },
-  topRight: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    color: "#cbd5e1",
-    fontSize: "13px",
-    fontWeight: 700,
-  },
-  topTextStrong: { color: "#dcfce7", fontWeight: 900 },
-  topText: { color: "#e5e7eb" },
-  sep: { color: "rgba(255,255,255,0.30)" },
-  pulseDot: {
-    width: "10px",
-    height: "10px",
-    borderRadius: "999px",
+  topLeft: { display: "flex", alignItems: "center", gap: 10, minWidth: 0 },
+  topRight: { display: "flex", alignItems: "center", gap: 10 },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 999,
     background: "#22c55e",
     boxShadow: "0 0 0 6px rgba(34,197,94,0.14)",
   },
+  topStrong: { color: "#dcfce7", fontWeight: 900, fontSize: 13 },
+  topText: { color: "#e5e7eb", fontWeight: 700, fontSize: 13 },
+  sep: { color: "rgba(255,255,255,0.35)" },
 
-  mainBar: {
-    background: "rgba(6, 9, 16, 0.86)",
-    borderBottom: "1px solid rgba(255,255,255,0.10)",
-  },
+  mainBar: { background: "rgba(6, 9, 16, 0.92)" },
   container: {
-    maxWidth: "1100px",
+    maxWidth: 1100,
     margin: "0 auto",
     padding: "12px 14px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: "14px",
+    gap: 12,
   },
 
-  brand: { display: "flex", alignItems: "center" },
-  logoLink: {
+  brand: {
     display: "flex",
     alignItems: "center",
-    gap: "12px",
+    gap: 12,
     textDecoration: "none",
+    minWidth: 0,
+    flex: 1,
   },
-  logoImg: {
-    height: "46px",
-    width: "auto",
-    borderRadius: "10px",
+  logo: {
+    height: 44,
+    width: 44,
+    borderRadius: 12,
     border: "1px solid rgba(255,255,255,0.12)",
+    objectFit: "cover",
   },
-  brandText: { display: "flex", flexDirection: "column", gap: "2px" },
-  brandName: {
+  brandText: { display: "flex", flexDirection: "column", gap: 2, minWidth: 0 },
+  name: {
     color: "#f8fafc",
     fontWeight: 950,
-    fontSize: "16px",
-    letterSpacing: "0.2px",
+    fontSize: 16,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
-  brandTagline: {
+  tagline: {
     color: "#cbd5e1",
-    fontSize: "12.5px",
-    lineHeight: 1.3,
+    fontSize: 12.5,
+    lineHeight: 1.25,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
 
-  navDesktop: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    flexWrap: "wrap",
-  },
+  navDesktop: { display: "flex", gap: 10, flexWrap: "wrap" },
   navLink: {
     textDecoration: "none",
     color: "#e5e7eb",
     fontWeight: 850,
-    fontSize: "13.5px",
+    fontSize: 13.5,
     padding: "10px 12px",
-    borderRadius: "12px",
+    borderRadius: 12,
     border: "1px solid rgba(255,255,255,0.10)",
     background: "rgba(255,255,255,0.04)",
   },
-  navLinkActive: {
+  navActive: {
     background: "rgba(34,197,94,0.14)",
     border: "1px solid rgba(34,197,94,0.35)",
     color: "#dcfce7",
   },
 
-  actions: { display: "flex", alignItems: "center", gap: "10px" },
-  waBtn: {
+  waDesktop: {
     padding: "10px 14px",
-    borderRadius: "12px",
+    borderRadius: 12,
     background: "#25D366",
     color: "#001b0f",
-    textDecoration: "none",
     fontWeight: 950,
-    border: "1px solid rgba(255,255,255,0.12)",
+    textDecoration: "none",
     whiteSpace: "nowrap",
   },
 
-  burger: {
-    width: "44px",
-    height: "44px",
-    borderRadius: "12px",
-    border: "1px solid rgba(255,255,255,0.10)",
+  menuBtn: {
+    display: "none", // هيتفعل في الموبايل من CSS
+    padding: "10px 12px",
+    borderRadius: 12,
+    border: "1px solid rgba(255,255,255,0.12)",
     background: "rgba(255,255,255,0.04)",
-    display: "none", // هتظهر في الشاشات الصغيرة بالـ CSS في globals لو حبيت
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "5px",
-    padding: "10px",
+    color: "#e5e7eb",
+    fontWeight: 900,
     cursor: "pointer",
+    whiteSpace: "nowrap",
   },
-  burgerLine: {
-    display: "block",
-    height: "2px",
-    width: "18px",
-    background: "#e5e7eb",
-    borderRadius: "10px",
-    transition: "transform 0.2s ease, opacity 0.2s ease",
-  },
-  bLine1: { transform: "translateY(7px) rotate(45deg)" },
-  bLine2: { opacity: 0 },
-  bLine3: { transform: "translateY(-7px) rotate(-45deg)" },
 
   mobilePanel: {
     borderTop: "1px solid rgba(255,255,255,0.10)",
     background: "rgba(6, 9, 16, 0.96)",
   },
-  mobileNav: {
-    display: "grid",
-    gridTemplateColumns: "1fr",
-    gap: "10px",
-    padding: "12px 0",
-  },
+  mobileNav: { display: "grid", gap: 10, padding: "12px 0" },
   mobileLink: {
     textDecoration: "none",
     color: "#e5e7eb",
     fontWeight: 900,
     padding: "12px 12px",
-    borderRadius: "14px",
+    borderRadius: 14,
     border: "1px solid rgba(255,255,255,0.10)",
     background: "rgba(255,255,255,0.04)",
   },
-  mobileLinkActive: {
+  mobileActive: {
     background: "rgba(34,197,94,0.14)",
     border: "1px solid rgba(34,197,94,0.35)",
     color: "#dcfce7",
   },
-  mobileCTA: {
-    padding: "10px 0 18px 0",
-    borderTop: "1px solid rgba(255,255,255,0.10)",
-    marginTop: "6px",
-  },
-  waBtnWide: {
-    display: "inline-block",
+  waMobile: {
+    display: "block",
     width: "100%",
     textAlign: "center",
     padding: "12px 14px",
-    borderRadius: "14px",
+    borderRadius: 14,
     background: "#25D366",
     color: "#001b0f",
-    textDecoration: "none",
     fontWeight: 950,
-    border: "1px solid rgba(255,255,255,0.12)",
-  },
-  mobileNote: {
-    marginTop: "8px",
-    color: "#cbd5e1",
-    fontSize: "12.5px",
-    textAlign: "center",
+    textDecoration: "none",
+    marginBottom: 14,
   },
 };
