@@ -1,300 +1,172 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { nav, site, waLink } from "@/lib/site";
+import { Button, SwapArrow, Wordmark } from "@/components/ui";
+import { ScrollProgress } from "@/components/motion";
 
-const WHATSAPP_NUMBER = "447526556945";
-
-function waLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
 
-  const nav = useMemo(
-    () => [
-      { href: "/", label: "Home" },
-      { href: "/services", label: "Services" },
-      { href: "/emergency", label: "Emergency" },
-      { href: "/quote", label: "Get Quote" },
-      { href: "/contact", label: "Contact" },
-    ],
-    []
-  );
+  // Solid background after scrolling; hide when scrolling down, show when scrolling up
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 12);
+      setHidden(y > 160 && y > lastY.current);
+      lastY.current = y;
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const waMsg =
-    "Hello Ad1 Airconditioning Ltd,\n" +
-    "I would like to get in touch.\n\n" +
-    "Service needed:\n" +
-    "Postcode:\n" +
-    "Residential/Commercial:\n" +
-    "Details:\n";
+  // Lock page scroll while the menu is open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname?.startsWith(href);
 
   return (
-    <header style={s.wrap}>
-      {/* Top strip */}
-      <div style={s.topStrip}>
-        <div style={s.containerTop}>
-          <div style={s.topLeft}>
-            <span style={s.dot} />
-            <span style={s.topStrong}></span>
-            <span style={s.sep}>•</span>
-            <span style={s.topText}>London-wide coverage</span>
-          </div>
-
-          <div style={s.topRight}>
-            <span style={s.topText}>Company No. 16462923</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main bar */}
-      <div style={s.mainBar}>
-        <div style={s.container}>
-          {/* Brand */}
-          <Link href="/" style={s.brand} onClick={() => setOpen(false)}>
-            <img src="/logo.jpg" alt="Ad1 Airconditioning Ltd" style={s.logo} />
-            <div style={s.brandText}>
-              <div style={s.name}>Ad1 Airconditioning Ltd</div>
-              <div style={s.tagline}>
-                installation, service, repair and maintenance
-              </div>
-            </div>
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,border-color] duration-500 ease-out-soft ${
+          hidden && !open ? "-translate-y-full" : "translate-y-0"
+        } ${
+          scrolled || open
+            ? "border-b border-line bg-ink/85 backdrop-blur-xl"
+            : "border-b border-transparent bg-transparent"
+        }`}
+      >
+        <div className="mx-auto flex h-[76px] max-w-[1200px] items-center justify-between gap-6 px-5 sm:px-8">
+          <Link href="/" aria-label={`${site.name} home`} onClick={() => setOpen(false)}>
+            <Wordmark />
           </Link>
 
-          {/* Desktop nav */}
-          <nav style={s.navDesktop} aria-label="Primary">
-            {nav.map((item) => {
-              const active =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname?.startsWith(item.href);
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  style={{ ...s.navLink, ...(active ? s.navActive : {}) }}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
+          <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
+            {nav.slice(1).map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`relative text-[15px] transition-colors duration-300 hover:text-fg ${
+                  isActive(item.href) ? "text-fg" : "text-muted"
+                }`}
+              >
+                {item.label}
+                {isActive(item.href) && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute -bottom-1.5 left-0 right-0 h-px bg-fg"
+                    transition={{ duration: 0.5, ease: EASE }}
+                  />
+                )}
+              </Link>
+            ))}
           </nav>
 
-          {/* Desktop WhatsApp */}
-          <a
-            href={waLink(waMsg)}
-            target="_blank"
-            rel="noreferrer"
-            style={s.waDesktop}
-          >
-            WhatsApp
-          </a>
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:block">
+              <Button href={site.phoneHref} size="sm" icon="phone">
+                Call {site.phoneDisplay}
+              </Button>
+            </span>
 
-          {/* Mobile Menu button */}
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            style={s.menuBtn}
-            aria-label="Toggle menu"
-          >
-            Menu
-          </button>
-        </div>
-
-        {/* Mobile dropdown */}
-        {open && (
-          <div style={s.mobilePanel}>
-            <div style={s.container}>
-              <div style={s.mobileNav}>
-                {nav.map((item) => {
-                  const active =
-                    item.href === "/"
-                      ? pathname === "/"
-                      : pathname?.startsWith(item.href);
-
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      style={{
-                        ...s.mobileLink,
-                        ...(active ? s.mobileActive : {}),
-                      }}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
-              </div>
-
-              <a
-                href={waLink(waMsg)}
-                target="_blank"
-                rel="noreferrer"
-                style={s.waMobile}
-                onClick={() => setOpen(false)}
-              >
-                WhatsApp
-              </a>
-            </div>
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              className="relative flex h-11 w-11 items-center justify-center lg:hidden"
+            >
+              <span
+                className={`absolute h-px w-7 bg-fg transition-transform duration-500 ease-out-soft ${
+                  open ? "rotate-45" : "-translate-y-[5px]"
+                }`}
+              />
+              <span
+                className={`absolute h-px w-7 bg-fg transition-transform duration-500 ease-out-soft ${
+                  open ? "-rotate-45" : "translate-y-[5px]"
+                }`}
+              />
+            </button>
           </div>
+        </div>
+        {scrolled && !open && <ScrollProgress />}
+      </header>
+
+      {/* Full-screen mobile menu */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed inset-0 z-40 flex flex-col bg-ink px-5 pb-10 pt-28 sm:px-8 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+          >
+            <motion.ul
+              className="flex flex-col"
+              initial="hidden"
+              animate="show"
+              variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
+            >
+              {nav.map((item) => (
+                <motion.li
+                  key={item.href}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+                  }}
+                  className="border-b border-line"
+                >
+                  <Link
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className={`group flex items-center justify-between py-5 text-3xl tracking-tight ${
+                      isActive(item.href) ? "text-fg" : "text-muted"
+                    }`}
+                  >
+                    {item.label}
+                    <SwapArrow className="h-6 w-6" />
+                  </Link>
+                </motion.li>
+              ))}
+            </motion.ul>
+
+            <motion.div
+              className="mt-auto grid gap-3"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: EASE, delay: 0.35 }}
+            >
+              <Button href={site.phoneHref} icon="phone">
+                Call {site.phoneDisplay}
+              </Button>
+              <Button
+                href={waLink("Hello Ad1 Airconditioning Ltd,\nI'd like some help with my air conditioning.")}
+                variant="whatsapp"
+                icon="whatsapp"
+              >
+                WhatsApp us
+              </Button>
+            </motion.div>
+          </motion.div>
         )}
-      </div>
-    </header>
+      </AnimatePresence>
+    </>
   );
 }
-
-/* ===== Styles ===== */
-const s: Record<string, React.CSSProperties> = {
-  wrap: {
-    background: "#0b1220",
-    borderBottom: "1px solid rgba(255,255,255,0.10)",
-  },
-
-  topStrip: {
-    background: "linear-gradient(90deg, rgba(34,197,94,0.18), rgba(59,130,246,0.14))",
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
-  },
-  containerTop: {
-    maxWidth: 1100,
-    margin: "0 auto",
-    padding: "8px 14px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
-  },
-  topLeft: { display: "flex", alignItems: "center", gap: 10, minWidth: 0 },
-  topRight: { display: "flex", alignItems: "center", gap: 10 },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 999,
-    background: "#22c55e",
-    boxShadow: "0 0 0 6px rgba(34,197,94,0.14)",
-  },
-  topStrong: { color: "#dcfce7", fontWeight: 900, fontSize: 13 },
-  topText: { color: "#e5e7eb", fontWeight: 700, fontSize: 13 },
-  sep: { color: "rgba(255,255,255,0.35)" },
-
-  mainBar: { background: "rgba(6, 9, 16, 0.92)" },
-  container: {
-    maxWidth: 1100,
-    margin: "0 auto",
-    padding: "12px 14px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
-  },
-
-  brand: {
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-    textDecoration: "none",
-    minWidth: 0,
-    flex: 1,
-  },
-  logo: {
-    height: 44,
-    width: 44,
-    borderRadius: 12,
-    border: "1px solid rgba(255,255,255,0.12)",
-    objectFit: "cover",
-  },
-  brandText: { display: "flex", flexDirection: "column", gap: 2, minWidth: 0 },
-  name: {
-    color: "#f8fafc",
-    fontWeight: 950,
-    fontSize: 16,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  tagline: {
-    color: "#cbd5e1",
-    fontSize: 12.5,
-    lineHeight: 1.25,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-
-  navDesktop: { display: "flex", gap: 10, flexWrap: "wrap" },
-  navLink: {
-    textDecoration: "none",
-    color: "#e5e7eb",
-    fontWeight: 850,
-    fontSize: 13.5,
-    padding: "10px 12px",
-    borderRadius: 12,
-    border: "1px solid rgba(255,255,255,0.10)",
-    background: "rgba(255,255,255,0.04)",
-  },
-  navActive: {
-    background: "rgba(34,197,94,0.14)",
-    border: "1px solid rgba(34,197,94,0.35)",
-    color: "#dcfce7",
-  },
-
-  waDesktop: {
-    padding: "10px 14px",
-    borderRadius: 12,
-    background: "#25D366",
-    color: "#001b0f",
-    fontWeight: 950,
-    textDecoration: "none",
-    whiteSpace: "nowrap",
-  },
-
-  menuBtn: {
-    display: "none", // هيتفعل في الموبايل من CSS
-    padding: "10px 12px",
-    borderRadius: 12,
-    border: "1px solid rgba(255,255,255,0.12)",
-    background: "rgba(255,255,255,0.04)",
-    color: "#e5e7eb",
-    fontWeight: 900,
-    cursor: "pointer",
-    whiteSpace: "nowrap",
-  },
-
-  mobilePanel: {
-    borderTop: "1px solid rgba(255,255,255,0.10)",
-    background: "rgba(6, 9, 16, 0.96)",
-  },
-  mobileNav: { display: "grid", gap: 10, padding: "12px 0" },
-  mobileLink: {
-    textDecoration: "none",
-    color: "#e5e7eb",
-    fontWeight: 900,
-    padding: "12px 12px",
-    borderRadius: 14,
-    border: "1px solid rgba(255,255,255,0.10)",
-    background: "rgba(255,255,255,0.04)",
-  },
-  mobileActive: {
-    background: "rgba(34,197,94,0.14)",
-    border: "1px solid rgba(34,197,94,0.35)",
-    color: "#dcfce7",
-  },
-  waMobile: {
-    display: "block",
-    width: "100%",
-    textAlign: "center",
-    padding: "12px 14px",
-    borderRadius: 14,
-    background: "#25D366",
-    color: "#001b0f",
-    fontWeight: 950,
-    textDecoration: "none",
-    marginBottom: 14,
-  },
-};

@@ -1,59 +1,46 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
-import StickyHeader from "@/components/StickyHeader";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { MotionProvider } from "@/components/motion";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Ad1 Airconditioning Ltd",
+  title: {
+    default: `${site.name} | Air Conditioning Services in London`,
+    template: `%s | ${site.name}`,
+  },
   description:
-    "installation, service, repair and maintenance — residential and commercial. Open 24/7 for emergency call-outs.",
+    "Air conditioning installation, servicing, repair and maintenance across London. Residential and commercial. Open 24/7 for emergency call-outs.",
+  manifest: "/site.webmanifest",
+  openGraph: {
+    title: `${site.name} | Air Conditioning Services in London`,
+    description:
+      "Installation, servicing, repair and maintenance across London. Open 24/7 for emergencies.",
+    images: ["/work/11.jpg"],
+    locale: "en_GB",
+    type: "website",
+  },
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: "#0e1015",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  // لو الهيدر عندك أطول/أقصر، عدّل الرقم ده
-  const HEADER_HEIGHT = 92;
-
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable}`}
-        style={{
-          margin: 0,
-          minHeight: "100vh",
-          background: "#f6f8fb",
-          color: "#0b1220",
-        }}
-      >
-        {/* هيدر يختفي مع النزول ويظهر مع الطلوع */}
-        <StickyHeader height={HEADER_HEIGHT} />
-
-        {/* عشان المحتوى يبدأ تحت الهيدر */}
-        <div style={{ paddingTop: HEADER_HEIGHT }}>
-          <main style={{ maxWidth: 1100, margin: "0 auto", padding: "18px 14px" }}>
-            {children}
-          </main>
-
+    <html lang="en-GB" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="min-h-screen bg-ink text-fg antialiased">
+        <MotionProvider>
+          <Header />
+          <main>{children}</main>
           <Footer />
-        </div>
+        </MotionProvider>
       </body>
     </html>
   );

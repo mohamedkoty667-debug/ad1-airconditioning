@@ -1,171 +1,80 @@
-"use client";
+import Link from "next/link";
+import { nav, services, site, waLink } from "@/lib/site";
+import { Container, Wordmark } from "@/components/ui";
+
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer
-      style={{
-        marginTop: "70px",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
-        background: "linear-gradient(135deg, #05080f, #0b1220)",
-        color: "#e5e7eb",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-          padding: "34px 20px",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-          gap: "20px",
-        }}
-      >
-        {/* العمود 1: الهوية */}
-        <div>
-          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-            <img
-              src="/logo.jpg"
-              alt="Ad1 Airconditioning Ltd"
-              style={{ height: "44px", width: "auto" }}
-            />
-            <div>
-              <div style={{ fontWeight: 900, fontSize: "16px" }}>
-                Ad1 Airconditioning Ltd
-              </div>
-              <div style={{ color: "#9ca3af", fontSize: "13px", marginTop: "4px" }}>
-                installation, service, repair and maintenance
-              </div>
+    <footer className="border-t border-line">
+      <Container className="py-16 sm:py-20">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <Link href="/" aria-label={`${site.name} home`}>
+              <Wordmark size="lg" />
+            </Link>
+            <p className="mt-6 max-w-sm leading-relaxed text-muted">{site.tagline}</p>
+            <div className="mt-8 space-y-1.5 text-fg">
+              <p>{site.address}</p>
+              <p>
+                <a href={site.phoneHref} className="link-draw-clean">
+                  {site.phoneDisplay}
+                </a>
+                <span className="px-2 text-muted">{"//"}</span>
+                <a href={`mailto:${site.email}`} className="link-draw-clean break-all">
+                  {site.email}
+                </a>
+              </p>
             </div>
           </div>
 
-          <div style={{ marginTop: "14px", color: "#9ca3af", fontSize: "13.5px", lineHeight: 1.6 }}>
-            Serving all London. Open 24/7 for emergency call-outs. Residential & Commercial.
+          <div>
+            <p className="mb-5 text-sm text-muted">Pages</p>
+            <ul className="space-y-3">
+              {nav.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="link-draw-clean text-fg/90 hover:text-fg">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <a
+                  href={waLink()}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="link-draw-clean text-fg/90 hover:text-fg"
+                >
+                  WhatsApp
+                </a>
+              </li>
+            </ul>
           </div>
 
-          <a
-            href="https://wa.me/447526556945"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "10px",
-              marginTop: "14px",
-              padding: "10px 14px",
-              borderRadius: "12px",
-              border: "1px solid rgba(56,189,248,0.35)",
-              background: "rgba(56,189,248,0.10)",
-              color: "#e5e7eb",
-              fontWeight: 800,
-              textDecoration: "none",
-              cursor: "pointer",
-              transition: "transform 220ms ease, box-shadow 220ms ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-3px)";
-              e.currentTarget.style.boxShadow = "0 18px 40px rgba(56,189,248,0.22)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-          >
-            WhatsApp Us <span style={{ opacity: 0.9 }}>→</span>
-          </a>
-        </div>
-
-        {/* العمود 2: روابط سريعة */}
-        <div>
-          <div style={{ fontWeight: 900, marginBottom: "12px" }}>Quick Links</div>
-
-          <div style={{ display: "grid", gap: "10px", fontSize: "14px" }}>
-            <a style={linkStyle()} href="/">Home</a>
-            <a style={linkStyle()} href="/services">Services</a>
-            <a style={linkStyle()} href="/emergency">Emergency</a>
-            <a style={linkStyle()} href="/quote">Get Quote</a>
-            <a style={linkStyle()} href="/contact">Contact</a>
+          <div>
+            <p className="mb-5 text-sm text-muted">Services</p>
+            <ul className="space-y-3">
+              {services.slice(0, 6).map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    href={`/services#${s.slug}`}
+                    className="link-draw-clean text-fg/90 hover:text-fg"
+                  >
+                    {s.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* العمود 3: بيانات الشركة */}
-        <div>
-          <div style={{ fontWeight: 900, marginBottom: "12px" }}>Company Details</div>
-
-          <div style={rowStyle()}>
-            <span style={labelStyle()}>WhatsApp:</span>
-            <a
-              href="https://wa.me/447526556945"
-              target="_blank"
-              rel="noreferrer"
-              style={{ ...linkStyle(), fontWeight: 800 }}
-            >
-              +44 7526 556945
-            </a>
-          </div>
-
-          <div style={rowStyle()}>
-            <span style={labelStyle()}>Email:</span>
-            <a style={linkStyle()} href="mailto:Ad1Airconditioningltd@gmail.com">
-              Ad1Airconditioningltd@gmail.com
-            </a>
-          </div>
-
-          <div style={rowStyle()}>
-            <span style={labelStyle()}>Address:</span>
-            <span style={{ color: "#cbd5e1", fontSize: "14px", lineHeight: 1.5 }}>
-              Flat 2, 119 Courthill Road, London, SE13 6DR
-            </span>
-          </div>
-
-          <div style={rowStyle()}>
-            <span style={labelStyle()}>Company Number:</span>
-            <span style={{ color: "#cbd5e1", fontSize: "14px", fontWeight: 800 }}>
-              16462923
-            </span>
-          </div>
+        <div className="mt-16 flex flex-col gap-3 border-t border-line pt-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {year} {site.name}. Company No. {site.companyNumber}
+          </p>
+          <p>Open 24/7 · Serving all of London</p>
         </div>
-      </div>
-
-      {/* شريط آخر */}
-      <div
-        style={{
-          borderTop: "1px solid rgba(255,255,255,0.08)",
-          padding: "14px 20px",
-          color: "#9ca3af",
-          fontSize: "13px",
-        }}
-      >
-        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
-          <span>© {new Date().getFullYear()} Ad1 Airconditioning Ltd. All rights reserved.</span>
-          <span>Open 24/7 • Serving all London</span>
-        </div>
-      </div>
+      </Container>
     </footer>
   );
-}
-
-function linkStyle(): React.CSSProperties {
-  return {
-    color: "#cbd5e1",
-    textDecoration: "none",
-    borderBottom: "1px solid transparent",
-    width: "fit-content",
-  };
-}
-
-function rowStyle(): React.CSSProperties {
-  return {
-    display: "grid",
-    gridTemplateColumns: "110px 1fr",
-    gap: "10px",
-    alignItems: "start",
-    marginBottom: "10px",
-  };
-}
-
-function labelStyle(): React.CSSProperties {
-  return {
-    color: "#9ca3af",
-    fontSize: "13px",
-    paddingTop: "2px",
-  };
 }

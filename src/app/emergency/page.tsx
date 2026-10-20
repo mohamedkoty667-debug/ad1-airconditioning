@@ -1,364 +1,135 @@
-import React from "react";
+import type { Metadata } from "next";
+import Image from "next/image";
+import { site, waLink } from "@/lib/site";
+import { Button, Container, Eyebrow, Section } from "@/components/ui";
+import { ImageReveal, Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { CtaBand, DetailRows, PageHero } from "@/components/sections";
+
+export const metadata: Metadata = {
+  title: "Emergency 24/7",
+  description:
+    "24/7 emergency air conditioning call-outs across London. Not cooling, leaks, error codes or noise. Call or WhatsApp now.",
+};
+
+const issues = [
+  "Air conditioning not cooling or stopped suddenly",
+  "Water leaks and drainage problems",
+  "Fault codes and system alarms",
+  "Unusual noise or vibration",
+  "Urgent commercial HVAC downtime",
+  "Bad smells or weak airflow",
+];
+
+const steps = [
+  {
+    title: "Call or WhatsApp us",
+    desc: "Tell us your location and what's happening: not cooling, a leak, an error code.",
+  },
+  {
+    title: "Send a few photos",
+    desc: "The unit's model label, the error code on the controller, and the indoor and outdoor units.",
+  },
+  {
+    title: "We advise and attend",
+    desc: "We confirm availability and the likely cause, and arrange an emergency visit if needed.",
+  },
+];
+
+const emergencyMsg =
+  "EMERGENCY - Hello Ad1 Airconditioning Ltd,\n\nProblem:\nPostcode:\nResidential or commercial:\nError code (if any):";
 
 export default function EmergencyPage() {
   return (
-    <div style={{ paddingTop: "20px" }}>
-      {/* HERO */}
-      <section
-        style={{
-          padding: "26px",
-          borderRadius: "18px",
-          border: "1px solid rgba(239,68,68,0.35)",
-          background: "linear-gradient(135deg, #0b0f18, #1a0b10)",
-          color: "#f8fafc",
-          position: "relative",
-          overflow: "hidden",
-        }}
+    <>
+      <PageHero
+        eyebrow="Emergency call-outs · 24/7 · London"
+        title="Emergency air conditioning support, day or night."
+        lead="If your system is down, leaking, showing error codes or causing overheating, contact us now. Residential and commercial call-outs across London, 24/7."
       >
-        <div
-          style={{
-            position: "absolute",
-            inset: "-120px -120px auto auto",
-            width: "320px",
-            height: "320px",
-            borderRadius: "999px",
-            background: "radial-gradient(circle, rgba(239,68,68,0.25), transparent 60%)",
-            filter: "blur(2px)",
-          }}
-        />
+        <Button href={site.phoneHref} icon="phone">
+          Call {site.phoneDisplay}
+        </Button>
+        <Button href={waLink(emergencyMsg)} variant="whatsapp" icon="whatsapp">
+          WhatsApp emergency
+        </Button>
+      </PageHero>
 
-        <div style={{ position: "relative" }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "8px 12px",
-              borderRadius: "999px",
-              background: "rgba(239,68,68,0.12)",
-              border: "1px solid rgba(239,68,68,0.35)",
-              color: "#fee2e2",
-              fontWeight: 700,
-              fontSize: "13px",
-              width: "fit-content",
-            }}
-          >
-            24/7 Emergency Call-Outs • London
+      <Section className="pt-0 sm:pt-0">
+        <Container>
+          <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
+            <ImageReveal className="relative aspect-[4/5] rounded-xl">
+              <Image
+                src="/work/work8.jpg"
+                alt="Engineer commissioning an outdoor air conditioning unit with gauges"
+                fill
+                sizes="(min-width: 1024px) 560px, 100vw"
+                className="object-cover"
+              />
+            </ImageReveal>
+
+            <div>
+              <Reveal>
+                <Eyebrow>What we handle</Eyebrow>
+                <h2 className="text-4xl leading-[1.05] tracking-[-0.03em] sm:text-5xl">
+                  Emergency issues we fix
+                </h2>
+              </Reveal>
+              <Stagger as="ul" className="mt-10 border-t border-line">
+                {issues.map((issue) => (
+                  <StaggerItem as="li" key={issue} className="flex items-center gap-4 border-b border-line py-5 text-lg">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
+                    {issue}
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </div>
           </div>
+        </Container>
+      </Section>
 
-          <h1 style={{ fontSize: "40px", margin: "12px 0 8px 0", lineHeight: 1.1 }}>
-            Emergency Air Conditioning Support
-          </h1>
+      <Section className="border-t border-line">
+        <Container>
+          <Reveal>
+            <Eyebrow>What to do right now</Eyebrow>
+            <h2 className="max-w-2xl text-4xl leading-[1.05] tracking-[-0.03em] sm:text-5xl">
+              Three steps to get you running again
+            </h2>
+          </Reveal>
+          <Stagger className="mt-14 grid gap-4 lg:grid-cols-3">
+            {steps.map((s, i) => (
+              <StaggerItem key={s.title} className="rounded-xl border border-line bg-panel p-8">
+                <p className="font-mono text-sm text-muted">{String(i + 1).padStart(2, "0")}</p>
+                <h3 className="mt-12 text-2xl tracking-tight">{s.title}</h3>
+                <p className="mt-3 leading-relaxed text-muted">{s.desc}</p>
+              </StaggerItem>
+            ))}
+          </Stagger>
 
-          <p style={{ margin: 0, color: "#e2e8f0", lineHeight: 1.7, maxWidth: "820px" }}>
-            If your AC is down, leaking, showing error codes, or causing overheating—contact us now.
-            We cover residential and commercial call-outs across London, 24/7.
-          </p>
-
-          <div style={{ display: "flex", gap: "12px", marginTop: "16px", flexWrap: "wrap" }}>
-            <a
-              href="https://wa.me/447526556945"
-              target="_blank"
-              rel="noreferrer"
-              style={ctaWhats()}
-            >
-              WhatsApp Emergency Now
-            </a>
-
-            <a href="/quote" style={ctaSoft()}>
-              Request a Quote
-            </a>
-
-            <a href="/services" style={ctaSoft()}>
-              View Services
-            </a>
-          </div>
-
-          <div style={{ marginTop: "14px", color: "#cbd5e1", fontSize: "13px" }}>
-            Typical response depends on location & availability. Message us on WhatsApp for the fastest support.
-          </div>
-        </div>
-      </section>
-
-      {/* GRID */}
-      <section
-        style={{
-          marginTop: "18px",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "18px",
-        }}
-      >
-        {/* WHAT WE CAN HELP WITH */}
-        <div style={card()}>
-          <h2 style={h2()}>Emergency issues we handle</h2>
-
-          <ul style={list()}>
-            <li style={li()}>
-              <span style={dot("#ef4444")} />
-              AC not cooling / stopped working suddenly
-            </li>
-            <li style={li()}>
-              <span style={dot("#f97316")} />
-              Water leaks / drainage problems
-            </li>
-            <li style={li()}>
-              <span style={dot("#38bdf8")} />
-              Fault codes / system alarms
-            </li>
-            <li style={li()}>
-              <span style={dot("#22c55e")} />
-              Unusual noises / vibration
-            </li>
-            <li style={li()}>
-              <span style={dot("#a78bfa")} />
-              Commercial HVAC urgent downtime
-            </li>
-            <li style={li()}>
-              <span style={dot("#eab308")} />
-              Odours / airflow issues
-            </li>
-          </ul>
-
-          <div style={miniNote()}>
-            Installation, service, repair and maintenance — residential and commercial.
-          </div>
-        </div>
-
-        {/* WHAT TO DO NOW */}
-        <div style={card()}>
-          <h2 style={h2()}>What to do right now</h2>
-
-          <div style={{ display: "grid", gap: "10px" }}>
-            <Step
-              n="1"
-              title="Message us on WhatsApp"
-              desc="Send your location + what’s happening (e.g. not cooling, leak, error code)."
+          <Reveal className="mt-20 grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+            <div>
+              <h2 className="text-3xl tracking-[-0.02em]">Coverage and details</h2>
+              <p className="mt-4 max-w-sm leading-relaxed text-muted">
+                For the fastest help, include your postcode and whether it&apos;s residential or commercial.
+                Response times depend on location and availability.
+              </p>
+            </div>
+            <DetailRows
+              rows={[
+                { label: "Coverage", value: site.coverage },
+                { label: "Availability", value: "24 hours a day, 7 days a week" },
+                { label: "Experience", value: site.experience },
+                { label: "Phone", value: <a href={site.phoneHref} className="link-draw">{site.phoneDisplay}</a> },
+                { label: "Company No.", value: site.companyNumber },
+              ]}
             />
-            <Step
-              n="2"
-              title="Send photos (optional but helps)"
-              desc="Unit model label, error code screen, indoor/outdoor unit photo."
-            />
-            <Step
-              n="3"
-              title="We advise next steps"
-              desc="We’ll confirm availability, likely cause, and arrange an emergency visit if needed."
-            />
-          </div>
+          </Reveal>
+        </Container>
+      </Section>
 
-          <div style={{ marginTop: "14px" }}>
-            <a
-              href="https://wa.me/447526556945"
-              target="_blank"
-              rel="noreferrer"
-              style={ctaWhatsFull()}
-            >
-              Open WhatsApp
-            </a>
-          </div>
-        </div>
-
-        {/* COVERAGE + TRUST */}
-        <div style={card()}>
-          <h2 style={h2()}>Coverage & trust</h2>
-
-          <div style={infoRow()}>
-            <span style={label()}>Coverage</span>
-            <span style={value()}>All London areas</span>
-          </div>
-
-          <div style={infoRow()}>
-            <span style={label()}>Emergency</span>
-            <span style={value()}>Open 24/7</span>
-          </div>
-
-          <div style={infoRow()}>
-            <span style={label()}>Experience</span>
-            <span style={value()}>10+ years</span>
-          </div>
-
-          <div style={infoRow()}>
-            <span style={label()}>Company No.</span>
-            <span style={value()}>16462923</span>
-          </div>
-
-          <div style={{ marginTop: "12px", color: "#cbd5e1", lineHeight: 1.7 }}>
-            <strong style={{ color: "#f8fafc" }}>Tip:</strong> For fastest help, include your postcode and
-            whether it’s residential or commercial.
-          </div>
-        </div>
-      </section>
-
-      {/* SMALL CTA STRIP */}
-      <section
-        style={{
-          marginTop: "18px",
-          padding: "16px",
-          borderRadius: "16px",
-          border: "1px solid rgba(255,255,255,0.12)",
-          background: "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03))",
-          color: "#e5e7eb",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: "12px",
-          flexWrap: "wrap",
-        }}
-      >
-        <div>
-          <div style={{ fontWeight: 800, fontSize: "16px" }}>
-            Need emergency AC help now?
-          </div>
-          <div style={{ color: "#cbd5e1", fontSize: "13px", marginTop: "4px" }}>
-            Message us on WhatsApp — we’ll respond as quickly as possible.
-          </div>
-        </div>
-
-        <a
-          href="https://wa.me/447526556945"
-          target="_blank"
-          rel="noreferrer"
-          style={ctaWhats()}
-        >
-          WhatsApp Emergency
-        </a>
-      </section>
-    </div>
+      <CtaBand
+        title="Need emergency help now?"
+        text="Call or WhatsApp us. We'll respond as quickly as possible."
+      />
+    </>
   );
-}
-
-/* ===== Small components (no events) ===== */
-
-function Step({ n, title, desc }: { n: string; title: string; desc: string }) {
-  return (
-    <div
-      style={{
-        padding: "12px",
-        borderRadius: "14px",
-        border: "1px solid rgba(255,255,255,0.10)",
-        background: "rgba(255,255,255,0.04)",
-      }}
-    >
-      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-        <div
-          style={{
-            width: "30px",
-            height: "30px",
-            borderRadius: "10px",
-            display: "grid",
-            placeItems: "center",
-            fontWeight: 900,
-            background: "rgba(239,68,68,0.16)",
-            border: "1px solid rgba(239,68,68,0.35)",
-            color: "#fee2e2",
-          }}
-        >
-          {n}
-        </div>
-        <div style={{ fontWeight: 800, color: "#f8fafc" }}>{title}</div>
-      </div>
-
-      <div style={{ marginTop: "8px", color: "#cbd5e1", lineHeight: 1.7 }}>
-        {desc}
-      </div>
-    </div>
-  );
-}
-
-/* ===== Styles ===== */
-
-function card(): React.CSSProperties {
-  return {
-    padding: "18px",
-    borderRadius: "18px",
-    background: "linear-gradient(180deg, #0b1220, #05080f)",
-    border: "1px solid rgba(255,255,255,0.1)",
-    color: "#e5e7eb",
-  };
-}
-
-function h2(): React.CSSProperties {
-  return { marginTop: 0, marginBottom: "12px", fontSize: "18px" };
-}
-
-function list(): React.CSSProperties {
-  return { margin: 0, paddingLeft: "18px", display: "grid", gap: "10px" };
-}
-
-function li(): React.CSSProperties {
-  return { listStyle: "none", display: "flex", gap: "10px", alignItems: "flex-start", color: "#cbd5e1", lineHeight: 1.6 };
-}
-
-function dot(color: string): React.CSSProperties {
-  return {
-    marginTop: "6px",
-    width: "10px",
-    height: "10px",
-    borderRadius: "999px",
-    background: color,
-    boxShadow: "0 0 0 4px rgba(255,255,255,0.04)",
-    flex: "0 0 10px",
-  };
-}
-
-function miniNote(): React.CSSProperties {
-  return {
-    marginTop: "14px",
-    color: "#9ca3af",
-    fontSize: "13px",
-    lineHeight: 1.6,
-    borderTop: "1px solid rgba(255,255,255,0.08)",
-    paddingTop: "12px",
-  };
-}
-
-function infoRow(): React.CSSProperties {
-  return {
-    display: "grid",
-    gridTemplateColumns: "140px 1fr",
-    gap: "12px",
-    padding: "10px 0",
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
-  };
-}
-
-function label(): React.CSSProperties {
-  return { color: "#9ca3af", fontSize: "13px" };
-}
-
-function value(): React.CSSProperties {
-  return { fontSize: "14px", color: "#e5e7eb" };
-}
-
-function ctaWhats(): React.CSSProperties {
-  return {
-    padding: "12px 16px",
-    borderRadius: "12px",
-    background: "#25D366",
-    color: "#001b0f",
-    fontWeight: 900,
-    textDecoration: "none",
-    border: "1px solid rgba(255,255,255,0.12)",
-  };
-}
-
-function ctaWhatsFull(): React.CSSProperties {
-  return {
-    ...ctaWhats(),
-    display: "block",
-    textAlign: "center",
-  };
-}
-
-function ctaSoft(): React.CSSProperties {
-  return {
-    padding: "12px 16px",
-    borderRadius: "12px",
-    background: "rgba(255,255,255,0.06)",
-    border: "1px solid rgba(255,255,255,0.15)",
-    color: "#e5e7eb",
-    fontWeight: 800,
-    textDecoration: "none",
-  };
 }
