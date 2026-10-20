@@ -3,7 +3,20 @@
   Edit this file to change phone numbers, email, services, etc. across the whole site.
 */
 
+import type { LogoKey } from "@/lib/logo-config";
+
 export const site = {
+  /*
+    Which logo the website shows. Change this one word to switch:
+      "fan"    Fan (current)            "loop"   Hot & Cold loop
+      "vent"   Vent "A"                 "tile"   Ice tile
+      "ones"   Snowflake of 1s          "air"    Airflow "A"
+      "drop"   Thermo drop              "unit"   The unit
+      "vortex" Vortex                   "degree" Ad1° (degree)
+    (The browser-tab icon is a separate file: src/app/icon.svg. Ask Claude to swap it too.)
+  */
+  logo: "fan" as LogoKey,
+
   name: "Ad1 Airconditioning Ltd",
   shortName: "Ad1",
   tagline: "Air conditioning installation, service, repair and maintenance across London.",

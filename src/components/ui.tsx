@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { site } from "@/lib/site";
+import { LogoMark } from "@/components/logos";
+import { logoTextStyle } from "@/lib/logo-config";
 import React from "react";
 
 /* ---------- Layout ---------- */
@@ -44,37 +47,48 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 
 /**
- * Ad1 logo mark: a three-blade fan in a ring (like an outdoor unit seen from the front).
- * Ring + hub use the current text colour; blades use the brand blue.
- * The blades turn a third of a rotation when the logo is hovered.
+ * The site logo. Which design is shown is set by `logo` in src/lib/site.ts.
+ * The mark animates gently when the logo is hovered.
  */
-export function FanMark({ className = "h-9 w-9", spin = true }: { className?: string; spin?: boolean }) {
-  const blade = "M24 24c-1.2-6.4 1.6-12.2 8.6-13.6 1.4 5.8-2.4 11.4-8.6 13.6Z";
-  return (
-    <svg viewBox="0 0 48 48" fill="none" className={`shrink-0 ${className}`} aria-hidden>
-      <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="2.6" />
-      <g
-        className={
-          spin
-            ? "origin-center transition-transform duration-[900ms] ease-out-soft [transform-box:fill-box] group-hover:rotate-[120deg] motion-reduce:transition-none"
-            : ""
-        }
-      >
-        {[0, 120, 240].map((r) => (
-          <path key={r} d={blade} fill="var(--color-accent-mark)" transform={`rotate(${r} 24 24)`} />
-        ))}
-      </g>
-      <circle cx="24" cy="24" r="2.6" fill="currentColor" />
-    </svg>
-  );
-}
-
-/** Full logo: fan mark + "Ad1 Airconditioning" */
 export function Wordmark({ size = "md" }: { size?: "md" | "lg" }) {
+  const style = logoTextStyle[site.logo];
+  const lg = size === "lg";
+  const mark = <LogoMark logo={site.logo} className={lg ? "h-11 w-11" : "h-8 w-8 sm:h-9 sm:w-9"} />;
+
+  if (style === "degree") {
+    return (
+      <span className="group inline-flex flex-col leading-none text-fg" aria-label={site.name}>
+        <span className={`font-medium tracking-[-0.04em] ${lg ? "text-4xl" : "text-[26px] sm:text-[28px]"}`}>
+          Ad1
+          <span className="inline-block text-accent-mark transition-transform duration-700 ease-out-soft group-hover:-translate-y-1 group-hover:rotate-180">
+            °
+          </span>
+        </span>
+        <span className={`mt-1.5 font-medium tracking-[0.3em] text-muted ${lg ? "text-[11px]" : "text-[8.5px]"}`}>
+          AIR CONDITIONING
+        </span>
+      </span>
+    );
+  }
+
+  if (style === "stack") {
+    return (
+      <span className="group inline-flex items-center gap-3 text-fg" aria-label={site.name}>
+        {mark}
+        <span className="flex flex-col leading-none">
+          <span className={`font-semibold tracking-[0.06em] ${lg ? "text-2xl" : "text-lg sm:text-xl"}`}>AD1</span>
+          <span className={`mt-1.5 font-medium tracking-[0.32em] text-muted ${lg ? "text-[10px]" : "text-[8.5px]"}`}>
+            AIR CONDITIONING
+          </span>
+        </span>
+      </span>
+    );
+  }
+
   return (
-    <span className="group inline-flex items-center gap-3 text-fg">
-      <FanMark className={size === "lg" ? "h-11 w-11" : "h-8 w-8 sm:h-9 sm:w-9"} />
-      <span className={`tracking-[-0.02em] ${size === "lg" ? "text-2xl" : "text-lg sm:text-xl"}`}>
+    <span className="group inline-flex items-center gap-3 text-fg" aria-label={site.name}>
+      {mark}
+      <span className={`tracking-[-0.02em] ${lg ? "text-2xl" : "text-lg sm:text-xl"}`}>
         Ad1 <span className="text-muted">Airconditioning</span>
       </span>
     </span>
