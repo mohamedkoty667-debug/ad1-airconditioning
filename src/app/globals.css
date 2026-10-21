@@ -82,3 +82,9 @@
 .group:hover .link-draw-clean {
   background-size: 100% 1px, 100% 1px;
 }
+
+/* Scrolling strip of area names */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

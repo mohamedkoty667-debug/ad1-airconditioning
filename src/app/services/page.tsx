@@ -16,7 +16,7 @@ export default function ServicesPage() {
     <>
       <PageHero
         eyebrow="Services · Residential & commercial"
-        title="Air conditioning services, done properly."
+        title="Every air conditioning service, under one roof."
         lead={`Installation, servicing, repair and maintenance across London. ${site.hours}.`}
       >
         <Button href="/quote">Get a free quote</Button>

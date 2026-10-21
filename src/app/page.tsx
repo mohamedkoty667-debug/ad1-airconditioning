@@ -1,11 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { services, site, waLink } from "@/lib/site";
+import { brands, services, site, waLink } from "@/lib/site";
 import { SwapArrow, ArrowLink, Button, Container, Eyebrow, FlakeIcon, Section } from "@/components/ui";
 import { CountUp, ImageReveal, Parallax, Reveal, Stagger, StaggerItem, TextReveal } from "@/components/motion";
 import { CtaBand, Process } from "@/components/sections";
 import RecentWork from "@/components/RecentWork";
 import HeroBackground from "@/components/HeroBackground";
+import Faq from "@/components/Faq";
+import Reviews from "@/components/Reviews";
+import AreasStrip from "@/components/AreasStrip";
 
 const standards = [
   {
@@ -35,20 +38,20 @@ export default function Home() {
         <Container className="pb-14 pt-40 sm:pb-20">
           <Stagger immediate>
             <StaggerItem>
-              <Eyebrow>Air conditioning specialists · London</Eyebrow>
+              <Eyebrow>Cooler spaces, better lives · London</Eyebrow>
             </StaggerItem>
             <TextReveal
               as="h1"
               immediate
               delay={0.3}
-              text="Precision cooling for London homes and businesses."
+              text="London air conditioning, done properly."
               className="max-w-5xl text-[2.9rem] leading-[1] tracking-[-0.035em] [text-shadow:0_2px_30px_rgb(0_0_0/0.35)] sm:text-7xl lg:text-[5.5rem]"
             />
             <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-[1.2fr_1fr] lg:items-end">
               <StaggerItem>
                 <p className="max-w-xl text-lg leading-relaxed text-fg/80 sm:text-xl">
-                  Installation, servicing, repair and maintenance for residential and commercial
-                  properties. Open 24/7 for emergency call-outs.
+                  Installation, servicing and repairs by engineers with 10+ years&apos; experience. Clear
+                  quotes, tidy work and 24/7 emergency call-outs across every London borough.
                 </p>
               </StaggerItem>
               <StaggerItem>
@@ -78,8 +81,8 @@ export default function Home() {
             {[
               { big: <CountUp to={10} suffix="+" />, label: "Years of experience" },
               { big: "24/7", label: "Emergency call-outs" },
-              { big: "All", label: "London areas covered" },
-              { big: "2", label: "Sectors: residential & commercial" },
+              { big: <CountUp to={32} />, label: "London boroughs covered" },
+              { big: "SE13", label: "Based in Lewisham, London" },
             ].map((s, i) => (
               <StaggerItem
                 key={s.label}
@@ -120,6 +123,14 @@ export default function Home() {
               </StaggerItem>
             ))}
           </Stagger>
+          <Reveal className="mt-14 flex flex-col gap-4 border-t border-line pt-10 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-muted">Experienced with all major brands, including</p>
+            <p className="flex flex-wrap gap-x-10 gap-y-2 text-2xl tracking-tight text-fg/70">
+              {brands.map((b) => (
+                <span key={b}>{b}</span>
+              ))}
+            </p>
+          </Reveal>
         </Container>
       </Section>
 
@@ -130,10 +141,10 @@ export default function Home() {
             <Reveal className="lg:sticky lg:top-32 lg:self-start">
               <Eyebrow>Services</Eyebrow>
               <h2 className="text-4xl leading-[1.05] tracking-[-0.03em] sm:text-5xl">
-                Our core air conditioning expertise
+                Everything your air conditioning needs
               </h2>
               <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">
-                A full range of services, delivered with care, from a single room to a whole building.
+                From a single bedroom unit to a full office system: we install it, keep it running, and fix it fast when it fails.
               </p>
               <div className="mt-10">
                 <ArrowLink href="/services">Explore all services</ArrowLink>
@@ -208,8 +219,8 @@ export default function Home() {
                 System down? We&apos;re on call around the clock.
               </h2>
               <p className="mt-6 max-w-md text-lg leading-relaxed text-muted">
-                Not cooling, leaking, showing an error code or making noise? Call or WhatsApp us now.
-                Residential and commercial, across London.
+                Not cooling, leaking, showing an error code or making strange noises? Call or WhatsApp us now
+                and we&apos;ll get an engineer to you as quickly as possible, day or night.
               </p>
               <div className="mt-10 flex flex-col gap-3 sm:flex-row">
                 <Button href={site.phoneHref} icon="phone">
@@ -224,7 +235,10 @@ export default function Home() {
         </Container>
       </Section>
 
+      <Reviews />
+      <AreasStrip />
       <Process />
+      <Faq />
       <CtaBand />
     </>
   );

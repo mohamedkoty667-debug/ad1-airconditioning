@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { site } from "@/lib/site";
 import { LogoMark } from "@/components/logos";
 import { logoTextStyle } from "@/lib/logo-config";
@@ -54,6 +55,30 @@ export function Wordmark({ size = "md" }: { size?: "md" | "lg" }) {
   const style = logoTextStyle[site.logo];
   const lg = size === "lg";
   const mark = <LogoMark logo={site.logo} className={lg ? "h-11 w-11" : "h-8 w-8 sm:h-9 sm:w-9"} />;
+
+  if (style === "image") {
+    // House logo: compact version in the header, full version (with tagline) in the footer
+    return lg ? (
+      <Image
+        src="/brand/house/ad1-logo-full-dark.svg"
+        alt={site.name}
+        width={1132}
+        height={620}
+        unoptimized
+        className="h-auto w-[300px] max-w-full"
+      />
+    ) : (
+      <Image
+        src="/brand/house/ad1-header.svg"
+        alt={site.name}
+        width={879}
+        height={283}
+        unoptimized
+        priority
+        className="h-11 w-auto transition-transform duration-500 ease-out-soft hover:scale-[1.03] sm:h-14"
+      />
+    );
+  }
 
   if (style === "degree") {
     return (

@@ -8,14 +8,15 @@ import type { LogoKey } from "@/lib/logo-config";
 export const site = {
   /*
     Which logo the website shows. Change this one word to switch:
-      "fan"    Fan (current)            "loop"   Hot & Cold loop
+      "fan"    Fan                        "loop"   Hot & Cold loop
       "vent"   Vent "A"                 "tile"   Ice tile
       "ones"   Snowflake of 1s          "air"    Airflow "A"
       "drop"   Thermo drop              "unit"   The unit
       "vortex" Vortex                   "degree" Ad1° (degree)
-    (The browser-tab icon is a separate file: src/app/icon.svg. Ask Claude to swap it too.)
+      "house"  Ad1 Air Con Ltd house logo (current)
+    (The browser-tab icon is a separate file: src/app/icon.svg. It currently shows the house icon.)
   */
-  logo: "fan" as LogoKey,
+  logo: "house" as LogoKey,
 
   name: "Ad1 Airconditioning Ltd",
   shortName: "Ad1",
@@ -35,6 +36,7 @@ export const nav = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/emergency", label: "Emergency" },
+  { href: "/areas", label: "Areas" },
   { href: "/quote", label: "Get a Quote" },
   { href: "/contact", label: "Contact" },
 ];
@@ -118,3 +120,64 @@ export const workPhotos = [
   { src: "/work/work2.jpg", alt: "Outdoor unit mounted on a brick wall" },
   { src: "/work/work8.jpg", alt: "Commissioning an outdoor unit with gauges" },
 ];
+
+/* London boroughs we cover, grouped by region (shown on the Areas page) */
+export const areas = [
+  { region: "South East", codes: "SE · BR · DA", boroughs: ["Lewisham", "Greenwich", "Southwark", "Lambeth", "Bromley", "Bexley"] },
+  { region: "Central", codes: "EC · WC · W1 · NW1", boroughs: ["City of London", "Westminster", "Camden", "Islington", "Kensington and Chelsea"] },
+  { region: "South West", codes: "SW · CR · KT · SM", boroughs: ["Wandsworth", "Merton", "Sutton", "Croydon", "Kingston upon Thames", "Richmond upon Thames"] },
+  { region: "East", codes: "E · IG · RM", boroughs: ["Tower Hamlets", "Hackney", "Newham", "Waltham Forest", "Redbridge", "Barking and Dagenham", "Havering"] },
+  { region: "West", codes: "W · HA · UB · TW", boroughs: ["Hammersmith and Fulham", "Ealing", "Brent", "Harrow", "Hounslow", "Hillingdon"] },
+  { region: "North", codes: "N · NW · EN", boroughs: ["Haringey", "Barnet", "Enfield"] },
+];
+
+/* London postcode areas (shown on the Areas page) */
+export const postcodes = [
+  { code: "SE", name: "South East" }, { code: "SW", name: "South West" }, { code: "E", name: "East" }, { code: "EC", name: "City" },
+  { code: "N", name: "North" }, { code: "NW", name: "North West" }, { code: "W", name: "West" }, { code: "WC", name: "West Central" },
+  { code: "BR", name: "Bromley" }, { code: "CR", name: "Croydon" }, { code: "DA", name: "Dartford / Bexley" }, { code: "EN", name: "Enfield" },
+  { code: "HA", name: "Harrow" }, { code: "IG", name: "Ilford" }, { code: "KT", name: "Kingston" }, { code: "RM", name: "Romford" },
+  { code: "SM", name: "Sutton" }, { code: "TW", name: "Twickenham" }, { code: "UB", name: "Southall / Uxbridge" },
+];
+
+/* Brands shown on the home page (seen in our installation photos) */
+export const brands = ["Daikin", "Mitsubishi Electric"];
+
+/* Frequently asked questions (home page) */
+export const faqs = [
+  {
+    q: "Do you cover my area?",
+    a: "Yes. We cover all 32 London boroughs and the City of London, from our base in Lewisham (SE13). Send us your postcode on WhatsApp and we'll confirm straight away.",
+  },
+  {
+    q: "Are you really available 24/7?",
+    a: "Yes. We take emergency call-outs day and night, including weekends and bank holidays. For the fastest help, call or WhatsApp us with your postcode and what's happening.",
+  },
+  {
+    q: "How do I get a quote?",
+    a: "Use the quote form, WhatsApp or call us. Tell us the service you need and your postcode, and send a few photos of the unit and any error code if you can. We'll reply with next steps and a clear price, and arrange a site visit if needed.",
+  },
+  {
+    q: "Do you work on homes and businesses?",
+    a: "Both. We install and look after systems in houses and flats, as well as offices, shops, restaurants and multi-zone commercial buildings.",
+  },
+  {
+    q: "Which brands do you work with?",
+    a: "We work with all major air conditioning brands, including Daikin and Mitsubishi Electric. If you're not sure what you have, send us a photo of the unit's label.",
+  },
+  {
+    q: "How often should air conditioning be serviced?",
+    a: "As a rule of thumb, at least once a year for homes, and more often for busy commercial systems. Regular servicing keeps the system efficient, quiet and reliable, and helps prevent breakdowns.",
+  },
+];
+
+/*
+  Customer reviews (home page).
+  Only add real reviews, copied word for word, with the customer's permission.
+  The section stays hidden until at least one review is added. Example:
+  { name: "Sarah M.", area: "Greenwich", text: "Fast, tidy and friendly ...", rating: 5, source: "Google" },
+*/
+export const reviews: { name: string; area?: string; text: string; rating: number; source?: string }[] = [];
+
+/* Link to leave a Google review (add yours from your Google Business Profile) */
+export const reviewLink = "";

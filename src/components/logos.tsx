@@ -150,6 +150,9 @@ export function LogoMark({ logo, className = "h-9 w-9" }: { logo: LogoKey; class
         </g>
       );
 
+    case "house":
+      return null; // drawn from image files, see Wordmark
+
     case "degree":
       return svg(
         <g strokeLinecap="round" strokeLinejoin="round">

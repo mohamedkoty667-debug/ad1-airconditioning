@@ -10,10 +10,11 @@ export type LogoKey =
   | "drop"    // C · Thermo drop
   | "unit"    // D · The unit
   | "vortex"  // E · Vortex
-  | "degree"; // F · Ad1° (degree)
+  | "degree"  // F · Ad1° (degree)
+  | "house";  // Ad1 Air Con Ltd house logo (image files in public/brand/house)
 
 /** How the company name is set next to the mark */
-export const logoTextStyle: Record<LogoKey, "inline" | "stack" | "degree"> = {
+export const logoTextStyle: Record<LogoKey, "inline" | "stack" | "degree" | "image"> = {
   loop: "stack",
   vent: "stack",
   fan: "inline",
@@ -24,4 +25,5 @@ export const logoTextStyle: Record<LogoKey, "inline" | "stack" | "degree"> = {
   unit: "inline",
   vortex: "stack",
   degree: "degree",
+  house: "image",
 };
