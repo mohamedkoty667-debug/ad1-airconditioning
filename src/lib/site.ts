@@ -107,6 +107,11 @@ export const services = [
 ];
 
 export const workPhotos = [
+  { src: "/work/commercial-refrigerant-pipework.jpg", alt: "Insulated refrigerant pipework neatly run on wall brackets for a commercial system" },
+  { src: "/work/daikin-skyair-rooftop-commissioning.jpg", alt: "Commissioning a Daikin Sky Air system on a rooftop with digital gauges" },
+  { src: "/work/mitsubishi-heavy-industries-outdoor-unit.jpg", alt: "Mitsubishi Heavy Industries inverter outdoor unit wall-mounted with isolator" },
+  { src: "/work/daikin-stacked-outdoor-units.jpg", alt: "Two Daikin outdoor units stacked on a wall bracket in a tight side passage" },
+  { src: "/work/commercial-outdoor-units-pipework.jpg", alt: "Commercial outdoor units on an adjustable frame with tidy pipework along the wall" },
   { src: "/work/11.jpg", alt: "Ceiling cassette unit installed in a high-rise office with London view" },
   { src: "/work/4.jpg", alt: "Daikin outdoor condensing units on a London rooftop" },
   { src: "/work/9.jpg", alt: "Ductwork and refrigerant pipework installation in a commercial fit-out" },
@@ -141,7 +146,7 @@ export const postcodes = [
 ];
 
 /* Brands shown on the home page (seen in our installation photos) */
-export const brands = ["Daikin", "Mitsubishi Electric"];
+export const brands = ["Daikin", "Mitsubishi Heavy Industries"];
 
 /* Frequently asked questions (home page) */
 export const faqs = [
@@ -163,7 +168,7 @@ export const faqs = [
   },
   {
     q: "Which brands do you work with?",
-    a: "We work with all major air conditioning brands, including Daikin and Mitsubishi Electric. If you're not sure what you have, send us a photo of the unit's label.",
+    a: "We work with all major air conditioning brands, including Daikin and Mitsubishi Heavy Industries. If you're not sure what you have, send us a photo of the unit's label.",
   },
   {
     q: "How often should air conditioning be serviced?",

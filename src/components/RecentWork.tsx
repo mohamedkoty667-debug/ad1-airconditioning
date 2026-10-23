@@ -57,8 +57,8 @@ export default function RecentWork({ initial = 6 }: { initial?: number }) {
               sizes="(min-width: 1024px) 33vw, 50vw"
               className="object-cover transition-transform duration-[1.2s] ease-out-soft group-hover:scale-[1.04]"
             />
-            <span className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <span className="absolute bottom-4 left-4 right-4 translate-y-2 text-sm leading-snug opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+            <span className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 [@media(hover:none)]:opacity-100" />
+            <span className="absolute bottom-3 left-3 right-3 translate-y-2 text-xs leading-snug opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 sm:bottom-4 sm:left-4 sm:right-4 sm:text-sm [@media(hover:none)]:translate-y-0 [@media(hover:none)]:opacity-100">
               {p.alt}
             </span>
           </motion.button>
