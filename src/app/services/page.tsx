@@ -7,7 +7,7 @@ import { CtaBand, PageHero, Process } from "@/components/sections";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/services" },
-  title: "Services",
+  title: "Air Conditioning Services in London",
   description:
     "Air conditioning installation, servicing, repairs, emergency call-outs, commercial HVAC and controls support across London.",
 };
