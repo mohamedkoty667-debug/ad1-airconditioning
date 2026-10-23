@@ -5,6 +5,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { CtaBand, PageHero } from "@/components/sections";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/areas" },
   title: "Areas We Cover",
   description:
     "Air conditioning installation, servicing and repairs in every London borough, from Lewisham, Greenwich and Bromley to Westminster, Camden, Ealing and Croydon. 24/7 emergency call-outs.",

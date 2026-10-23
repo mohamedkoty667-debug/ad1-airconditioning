@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { brands, services, site, waLink } from "@/lib/site";
@@ -9,6 +10,8 @@ import HeroBackground from "@/components/HeroBackground";
 import Faq from "@/components/Faq";
 import Reviews from "@/components/Reviews";
 import AreasStrip from "@/components/AreasStrip";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 const standards = [
   {

@@ -2,18 +2,21 @@
 
 /*
   Quote form.
-  No server needed: on submit it opens WhatsApp (or the visitor's email app)
-  with all the details already written out, ready to send.
+  "Send request" emails the details straight to you (see src/app/api/quote/route.ts).
+  If email isn't set up yet, or sending fails, the visitor is offered WhatsApp / email
+  with everything already written out, so no enquiry is lost.
 */
 
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { services, site, waLink } from "@/lib/site";
 import { ButtonContent, buttonClass } from "@/components/ui";
 
 type Fields = {
   name: string;
   phone: string;
+  email: string;
   postcode: string;
   property: "Residential" | "Commercial";
   service: string;
@@ -24,6 +27,7 @@ type Fields = {
 const initial: Fields = {
   name: "",
   phone: "",
+  email: "",
   postcode: "",
   property: "Residential",
   service: "",
@@ -37,7 +41,14 @@ const inputCls =
 export default function QuoteForm() {
   const [f, setF] = useState<Fields>(initial);
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
-  const [sent, setSent] = useState<null | "whatsapp" | "email">(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "fallback" | "error">("idle");
+  const [trap, setTrap] = useState(""); // hidden spam trap
+  const box = useRef<HTMLDivElement>(null);
+
+  // After sending, bring the confirmation into view (it's shorter than the form)
+  useEffect(() => {
+    if (status !== "idle" && status !== "sending") box.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [status]);
 
   const set = <K extends keyof Fields>(k: K, v: Fields[K]) => {
     setF((prev) => ({ ...prev, [k]: v }));
@@ -47,6 +58,8 @@ export default function QuoteForm() {
   const validate = () => {
     const e: typeof errors = {};
     if (!f.name.trim()) e.name = "Please add your name";
+    if (f.phone.replace(/\D/g, "").length < 10) e.phone = "Please add a phone number we can call you on";
+    if (f.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email)) e.email = "Please check your email address";
     if (!f.postcode.trim()) e.postcode = "Please add your postcode";
     if (!f.service) e.service = "Please choose a service";
     setErrors(e);
@@ -59,7 +72,8 @@ export default function QuoteForm() {
       "I'd like a quote.",
       "",
       `Name: ${f.name}`,
-      f.phone ? `Phone: ${f.phone}` : null,
+      `Phone: ${f.phone}`,
+      f.email ? `Email: ${f.email}` : null,
       `Postcode: ${f.postcode}`,
       `Property: ${f.property}`,
       `Service: ${f.service}`,
@@ -69,23 +83,36 @@ export default function QuoteForm() {
       .filter((line) => line !== null)
       .join("\n");
 
-  const send = (via: "whatsapp" | "email") => {
+  const mailto = () =>
+    `mailto:${site.email}?subject=${encodeURIComponent(`Quote request: ${f.service} (${f.postcode})`)}&body=${encodeURIComponent(message())}`;
+
+  // Main button: email the request to Ad1
+  const submit = async () => {
     if (!validate()) return;
-    const url =
-      via === "whatsapp"
-        ? waLink(message())
-        : `mailto:${site.email}?subject=${encodeURIComponent(
-            `Quote request: ${f.service} (${f.postcode})`
-          )}&body=${encodeURIComponent(message())}`;
-    if (via === "whatsapp") window.open(url, "_blank", "noopener,noreferrer");
-    else window.location.href = url;
-    setSent(via);
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...f, company: trap }),
+      });
+      if (res.ok) return setStatus("done");
+      if (res.status === 429) return setStatus("error");
+      setStatus("fallback"); // not set up yet, or sending failed → offer WhatsApp / email
+    } catch {
+      setStatus("fallback");
+    }
+  };
+
+  const openWhatsApp = () => {
+    if (!validate()) return;
+    window.open(waLink(message()), "_blank", "noopener,noreferrer");
   };
 
   return (
-    <div className="relative rounded-xl border border-line bg-panel p-6 sm:p-10">
+    <div ref={box} className="relative scroll-mt-28 rounded-xl border border-line bg-panel p-6 sm:p-10">
       <AnimatePresence mode="wait">
-        {sent ? (
+        {status === "done" || status === "fallback" || status === "error" ? (
           <motion.div
             key="done"
             initial={{ opacity: 0, y: 12 }}
@@ -94,23 +121,47 @@ export default function QuoteForm() {
             transition={{ duration: 0.5 }}
             className="py-10"
           >
-            <p className="text-sm text-muted">Almost done</p>
-            <h3 className="mt-3 text-3xl tracking-tight">
-              {sent === "whatsapp" ? "WhatsApp has opened with your details." : "Your email app has opened with your details."}
-            </h3>
-            <p className="mt-4 max-w-md leading-relaxed text-muted">
-              Just press send. If nothing opened, message us directly on {site.phoneDisplay} or email{" "}
-              <a href={`mailto:${site.email}`} className="link-draw text-fg">
-                {site.email}
-              </a>
-              .
-            </p>
+            {status === "done" ? (
+              <>
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent/15 text-accent-hover">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6" aria-hidden>
+                    <path d="m5 12 5 5 9-10" />
+                  </svg>
+                </span>
+                <h3 className="mt-6 text-3xl tracking-tight">Thanks, {f.name.split(" ")[0]}. We&apos;ve got your request.</h3>
+                <p className="mt-4 max-w-md leading-relaxed text-muted">
+                  We&apos;ll be in touch on {f.phone} shortly. If it&apos;s urgent, call us now on{" "}
+                  <a href={site.phoneHref} className="link-draw text-fg">
+                    {site.phoneDisplay}
+                  </a>
+                  . You can also WhatsApp us photos of the unit to speed things up.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-muted">{status === "error" ? "Too many requests" : "One more step"}</p>
+                <h3 className="mt-3 text-3xl tracking-tight">
+                  {status === "error" ? "Please send it on WhatsApp instead." : "Send your request on WhatsApp or email."}
+                </h3>
+                <p className="mt-4 max-w-md leading-relaxed text-muted">
+                  Your details are already written out. Just tap one of the buttons below and press send.
+                </p>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <button type="button" onClick={openWhatsApp} className={buttonClass("whatsapp", "md", "flex-1")}>
+                    <ButtonContent variant="whatsapp" icon="whatsapp">Send on WhatsApp</ButtonContent>
+                  </button>
+                  <a href={mailto()} className={buttonClass("secondary")}>
+                    <ButtonContent variant="secondary" icon="none">Send by email</ButtonContent>
+                  </a>
+                </div>
+              </>
+            )}
             <button
               type="button"
-              onClick={() => setSent(null)}
+              onClick={() => setStatus("idle")}
               className="mt-8 border-b border-line pb-0.5 text-fg hover:border-fg"
             >
-              Edit my details
+              {status === "done" ? "Send another request" : "Edit my details"}
             </button>
           </motion.div>
         ) : (
@@ -122,7 +173,7 @@ export default function QuoteForm() {
             noValidate
             onSubmit={(e) => {
               e.preventDefault();
-              send("whatsapp");
+              submit();
             }}
             className="grid gap-6"
           >
@@ -136,7 +187,7 @@ export default function QuoteForm() {
                   placeholder="Jane Smith"
                 />
               </Field>
-              <Field label="Phone (optional)">
+              <Field label="Phone" error={errors.phone}>
                 <input
                   className={inputCls}
                   value={f.phone}
@@ -184,6 +235,17 @@ export default function QuoteForm() {
               </Field>
             </div>
 
+            <Field label="Email (optional)" error={errors.email}>
+              <input
+                className={inputCls}
+                type="email"
+                value={f.email}
+                onChange={(e) => set("email", e.target.value)}
+                autoComplete="email"
+                placeholder="jane@example.com"
+              />
+            </Field>
+
             <Field label="Service needed" error={errors.service}>
               <select
                 className={`${inputCls} appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%239aa3b2%22 stroke-width=%221.6%22><path d=%22M6 9l6 6 6-6%22/></svg>')] bg-[length:20px] bg-[right_14px_center] bg-no-repeat pr-12`}
@@ -218,22 +280,34 @@ export default function QuoteForm() {
               />
             </Field>
 
+            {/* Spam trap: hidden from people, bots fill it in */}
+            <input
+              type="text"
+              name="company"
+              value={trap}
+              onChange={(e) => setTrap(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden
+              className="absolute left-[-9999px] h-px w-px opacity-0"
+            />
+
             <div className="mt-2 flex flex-col gap-3 sm:flex-row">
-              <button type="submit" className={buttonClass("primary", "md", "flex-1")}>
-                <ButtonContent>Send via WhatsApp</ButtonContent>
+              <button type="submit" disabled={status === "sending"} className={buttonClass("primary", "md", "flex-1 disabled:opacity-70")}>
+                <ButtonContent>{status === "sending" ? "Sending…" : "Send request"}</ButtonContent>
               </button>
-              <button
-                type="button"
-                onClick={() => send("email")}
-                className={buttonClass("secondary")}
-              >
-                <ButtonContent variant="secondary" icon="none">
-                  Send by email instead
+              <button type="button" onClick={openWhatsApp} className={buttonClass("whatsapp")}>
+                <ButtonContent variant="whatsapp" icon="whatsapp">
+                  WhatsApp instead
                 </ButtonContent>
               </button>
             </div>
-            <p className="text-sm text-muted">
-              Tip: after sending, attach photos of the unit and any error code to speed up your quote.
+            <p className="text-sm leading-relaxed text-muted">
+              We only use your details to reply to your enquiry. See our{" "}
+              <Link href="/privacy" className="link-draw text-fg/90">
+                privacy policy
+              </Link>
+              . Tip: WhatsApp us photos of the unit and any error code to speed up your quote.
             </p>
           </motion.form>
         )}

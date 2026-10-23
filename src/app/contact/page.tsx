@@ -5,6 +5,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { DetailRows, PageHero } from "@/components/sections";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact",
   description: `Contact ${site.name}. Call or WhatsApp ${site.phoneDisplay}, or email ${site.email}. Covering all of London, 24/7.`,
 };

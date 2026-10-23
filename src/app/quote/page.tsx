@@ -6,13 +6,14 @@ import { DetailRows, PageHero } from "@/components/sections";
 import QuoteForm from "@/components/QuoteForm";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/quote" },
   title: "Get a Quote",
   description:
     "Request a free air conditioning quote in London. Installation, servicing, repair and maintenance for homes and businesses.",
 };
 
 const steps = [
-  { title: "Send your request", desc: "Fill in the form. It opens WhatsApp or email with everything written out." },
+  { title: "Send your request", desc: "Fill in the form and press send. It comes straight to us, or use WhatsApp if you prefer." },
   { title: "Share photos", desc: "Add photos of the units, model labels or error codes if you can." },
   { title: "Get a clear quote", desc: "We advise on the best option and confirm the price, with a site visit if needed." },
 ];

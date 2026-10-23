@@ -6,6 +6,7 @@ import { ImageReveal, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { CtaBand, DetailRows, PageHero } from "@/components/sections";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/emergency" },
   title: "Emergency 24/7",
   description:
     "24/7 emergency air conditioning call-outs across London. Not cooling, leaks, error codes or noise. Call or WhatsApp now.",

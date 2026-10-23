@@ -72,7 +72,12 @@ export default function Footer() {
           <p>
             © {year} {site.name}. Company No. {site.companyNumber}
           </p>
-          <p>Open 24/7 · Serving all of London</p>
+          <p className="flex gap-6">
+            <span>Open 24/7 · Serving all of London</span>
+            <Link href="/privacy" className="link-draw-clean hover:text-fg">
+              Privacy policy
+            </Link>
+          </p>
         </div>
       </Container>
     </footer>
