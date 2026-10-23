@@ -19,6 +19,14 @@ export const metadata: Metadata = {
   description:
     "Air conditioning installation, servicing, repair and maintenance across London. Residential and commercial. Open 24/7 for emergency call-outs.",
   manifest: "/site.webmanifest",
+  // Google search shows a square icon; it prefers sizes that are multiples of 48px
+  icons: {
+    icon: [
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: `${site.name} | Air Conditioning Services in London`,
     description:
