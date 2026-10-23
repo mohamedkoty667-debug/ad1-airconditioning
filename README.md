@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ad1 Airconditioning Ltd: website
 
-## Getting Started
+Built with Next.js, Tailwind CSS and Framer Motion.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Run it locally
 ```
+npm install
+npm run dev
+```
+Then open http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where to change things
+| What | File |
+|---|---|
+| Phone, email, address, company number, services list, gallery photos | `src/lib/site.ts` |
+| Colours and fonts | `src/app/globals.css` (the `@theme` block) |
+| Home page | `src/app/page.tsx` |
+| Other pages | `src/app/services`, `emergency`, `quote`, `contact` |
+| Header / mobile menu | `src/components/Header.tsx` |
+| Footer | `src/components/Footer.tsx` |
+| Animations | `src/components/motion.tsx` |
+| Quote form | `src/components/QuoteForm.tsx` |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To add a gallery photo: put the image in `public/work/` and add a line for it in `workPhotos` in `src/lib/site.ts`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Quote form emails (one-time setup, ~5 minutes)
+The quote form emails each request to you. Until this is set up, it automatically offers WhatsApp/email instead, so nothing is lost.
 
-## Learn More
+1. Create a free account at https://resend.com (sign up with the email you want quotes sent to).
+2. In Resend, go to **API Keys → Create API Key** and copy it (starts with `re_`).
+3. **On your computer:** copy `.env.example` to a new file called `.env.local` and paste the key after `RESEND_API_KEY=`. Restart `npm run dev`.
+   **On Vercel:** Project → Settings → Environment Variables → add `RESEND_API_KEY` with the key, then redeploy.
+4. Send a test request from the Get a Quote page.
 
-To learn more about Next.js, take a look at the following resources:
+Optional: verify your own domain in Resend, then set `QUOTE_FROM_EMAIL` (e.g. `Ad1 Website <quotes@yourdomain.co.uk>`) so emails come from your domain and can go to any address (`QUOTE_TO_EMAIL`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## When the site goes live
+Set `NEXT_PUBLIC_SITE_URL` to your web address (e.g. `https://www.ad1airconditioning.co.uk`) so Google and link previews use the right address.
+Then add the site to Google Search Console and submit `/sitemap.xml`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Other pages and files
+| What | File |
+|---|---|
+| Privacy policy (update the date when you change it) | `src/app/privacy/page.tsx` |
+| Quote form email sender | `src/app/api/quote/route.ts` |
+| Sticky Call/WhatsApp bar on phones | `src/components/MobileCallBar.tsx` |
+| Link preview image (WhatsApp/Facebook) | `src/app/opengraph-image.jpg` |
+| Business details for Google | `src/app/layout.tsx` (`businessJsonLd`) |
